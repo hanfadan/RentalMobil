@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Manajemen Mobil</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.6.1/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h2>Manajemen Mobil</h2>
+    <br>
+    <div class="m-2">
+        <a class="h3" th:href="@{/mobil/new}">Tambah Mobil Baru</a>
+    </div>
+    <div th:if="${message}" class="alert alert-success text-center">
+        [[${message}]]
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <th>ID</th>
+        <th>Nama Mobil</th>
+        <th>No Polisi</th>
+        <th>Harga Sewa</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <th:block th:each="mobil : ${listMobil}">
+            <tr>
+                <td>[[${mobil.id}]]</td>
+                <td>[[${mobil.nama_mobil}]]</td>
+                <td>[[${mobil.no_polisi}]]</td>
+                <td>[[${mobil.harga_sewa}]]</td>
+                <td>
+                    <a class="h4 m-3" th:href="@{'/mobil/edit/' + ${mobil.id}}">Edit</a>
+                    <a class="h4" th:href="@{'/mobil/delete/' + ${mobil.id}}">Delete</a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>

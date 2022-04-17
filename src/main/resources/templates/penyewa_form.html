@@ -2,15 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}">
-    <title>Tambah Penyewa Baru</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.6.1/css/bootstrap.min.css}">
+    <title>[[${pageTitle}]]</title>
 </head>
 <body>
 <div class="container-fluid text-center">
-    <div><h2>Tambah Penyewa</h2></div>
+    <div><h2>[[${pageTitle}]]</h2></div>
     <form th:action="@{/penyewa/save}" method="post" th:object="${penyewa}" class="mx-auto" style="width: 500px;">
         <div class="border border-secondary">
-
+<input type="hidden" th:field="*{id}">
         <div class="mb-3">
             <label for="nama_penyewa" class="form-label">Nama Penyewa</label>
             <input type="text" class="form-control" id="nama_penyewa" th:field="*{nama_penyewa}">
@@ -18,13 +18,21 @@
 
         <div class="mb-3">
             <label for="tanggal_mulai_sewa" class="form-label">Tanggal Mulai Sewa</label>
-            <input type="date" class="form-control" id="tanggal_mulai_sewa" th:field="*{tanggal_mulai_sewa}">
+            <input type="date" class="date form-control" id="tanggal_mulai_sewa" th:field="*{tanggal_mulai_sewa}">
         </div>
 
         <div class="mb-3">
             <label for="tanggal_selesai_sewa" class="form-label">Tanggal Selesai Sewa</label>
-            <input type="date" class="form-control" id="tanggal_selesai_sewa" aria-describedby="emailHelp" th:field="*{tanggal_selesai_sewa}">
+            <input type="date" class="date form-control" id="tanggal_selesai_sewa" aria-describedby="emailHelp" th:field="*{tanggal_selesai_sewa}">
         </div>
+
+            <div class="mb-3">
+                <select th:field="*{mobil}" class="custom-select form-control" required>
+                    <th:block th:each="mobil : ${mobilList}">
+                        <option th:text="${mobil.nama_mobil}" th:value="${mobil.id}"/>
+                    </th:block>
+                </select>
+            </div>
 
             <div class="mb-3">
                 <label for="keterangan" class="form-label">Keterangan</label>
@@ -36,9 +44,23 @@
             <label class="form-check-label" for="exampleCheck1">Status</label>
         </div>
         <button type="submit" class="btn btn-primary m-2">Submit</button>
-            <button type="cancel" class="btn btn-secondary m-2">Cancel</button>
+            <button type="button" class="btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    function cancelForm() {
+window.location = "[[@{/penyewa}]]";
+    }
+</script>
+<script type="text/javascript">
+    $(".date").datepicker({
+        format: "yyyy-mm-dd",
+    });
+</script>
+<script src=
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js">
+</script>
 </body>
 </html>

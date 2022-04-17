@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.6.1/css/bootstrap.min.css}">
+    <title>[[${pageTitle}]]</title>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div><h2>[[${pageTitle}]]</h2></div>
+    <form th:action="@{/mobil/save}" method="post" th:object="${mobil}" class="mx-auto" style="width: 500px;">
+        <div class="border border-secondary">
+            <input type="hidden" th:field="*{id}">
+            <div class="mb-3">
+                <label for="nama_mobil" class="form-label">Nama Mobil</label>
+                <input type="text" class="form-control" id="nama_mobil" th:field="*{nama_mobil}">
+            </div>
+            <div class="mb-3">
+                <label for="no_polisi" class="form-label">No Polisi</label>
+                <input type="text" class="form-control" id="no_polisi" aria-describedby="emailHelp" th:field="*{no_polisi}">
+            </div>
+            <div class="mb-3">
+                <label for="harga_sewa" class="form-label">Harga Sewa</label>
+                <input type="text" class="form-control" id="harga_sewa" aria-describedby="emailHelp" th:field="*{harga_sewa}">
+            </div>
+            <button type="submit" class="btn btn-primary m-2">Submit</button>
+            <button type="button" class="btn btn-secondary m-2" onclick="cancelForm()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    function cancelForm() {
+        window.location = "[[@{/mobil}]]";
+    }
+</script>
+</body>
+</html>
