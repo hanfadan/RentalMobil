@@ -16,7 +16,7 @@ public class BiayaService {
     private BiayaRepository biayaRepository;
 
     public List<Biaya> listAll() {
-        return  (List<Biaya>) biayaRepository.findAll();
+        return (List<Biaya>) biayaRepository.findAll();
     }
 
     public Biaya saveBiaya(Biaya biaya) {
@@ -24,17 +24,17 @@ public class BiayaService {
         return biaya;
     }
 
-    public Biaya get(Integer penyewa) throws BiayaNotFoundException {
-        Optional<Biaya> result = biayaRepository.findById(penyewa);
-        if (result .isPresent()) {
+    public Biaya get(Integer id_penyewa) throws BiayaNotFoundException {
+        Optional<Biaya> result = biayaRepository.findById(id_penyewa);
+        if (result.isPresent()) {
             return result.get();
         }
-        throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + penyewa);
+        throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + id_penyewa);
     }
 
     public void delete(Integer penyewa) throws BiayaNotFoundException {
-        Long count = biayaRepository.countById(penyewa);
-        if (count == null || count == 0){
+        Integer count = biayaRepository.countById(penyewa);
+        if (count == null || count == 0) {
             throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + penyewa);
         }
         biayaRepository.deleteById(penyewa);

@@ -30,7 +30,7 @@ public class Mobil {
     @ManyToOne
     private Penyewa penyewa;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_biaya")
     private Biaya biaya;
 

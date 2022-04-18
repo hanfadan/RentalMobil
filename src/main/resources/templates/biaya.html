@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>List Biaya</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.6.1/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h2>List Biaya</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <th>ID</th>
+        <th>Nama Mobil</th>
+        <th>No Polisi</th>
+        <th>Harga Sewa</th>
+        <th></th>
+        </thead>
+        <tbody>
+        <th:block th:each="biaya : ${listBiaya}">
+            <tr>
+                <td>[[${biaya.id}]]</td>
+                <td>[[${biaya.jam}]]</td>
+                <td>[[${biaya.biaya}]]</td>
+                <td>[[${biaya.id_mobil}]]</td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+</html>

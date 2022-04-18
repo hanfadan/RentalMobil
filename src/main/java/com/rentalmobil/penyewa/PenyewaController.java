@@ -1,5 +1,7 @@
 package com.rentalmobil.penyewa;
 
+import com.rentalmobil.biaya.Biaya;
+import com.rentalmobil.biaya.BiayaService;
 import com.rentalmobil.mobil.Mobil;
 import com.rentalmobil.mobil.MobilService;
 import org.springframework.beans.factory.annotation.Autowired;

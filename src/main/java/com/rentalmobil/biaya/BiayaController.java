@@ -3,6 +3,7 @@ package com.rentalmobil.biaya;
 import com.rentalmobil.penyewa.Penyewa;
 import com.rentalmobil.penyewa.PenyewaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,12 @@ public class BiayaController {
         List<Biaya> listBiaya = service.listAll();
         model.addAttribute("listBiaya", listBiaya);
         return "biaya";
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Biaya> getBiayaById(@PathVariable("id") Integer id, RedirectAttributes ra) throws BiayaNotFoundException {
+        Biaya biaya = service.get(id);
+        return ResponseEntity.ok(biaya);
     }
 
     @GetMapping("/biaya/new")
