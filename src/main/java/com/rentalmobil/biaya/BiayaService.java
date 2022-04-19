@@ -1,42 +1,49 @@
 package com.rentalmobil.biaya;
 
-import com.rentalmobil.mobil.Mobil;
-import com.rentalmobil.mobil.MobilNotFoundException;
-import com.rentalmobil.mobil.MobilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 
-public class BiayaService {
+public class BiayaService implements IBiayaService{
     @Autowired
     private BiayaRepository biayaRepository;
 
+    @Override
+    public List<Biaya> getAllBiaya(){
+        List<Biaya> list = new ArrayList<>();
+        biayaRepository.findAll().forEach(e ->list.add(e));
+        return list;
+    }
+
+    @Override
     public List<Biaya> listAll() {
         return  (List<Biaya>) biayaRepository.findAll();
     }
 
-    public Biaya saveBiaya(Biaya biaya) {
+    @Override
+    public Biaya addBiaya(Biaya biaya){
         biayaRepository.save(biaya);
         return biaya;
     }
 
-    public Biaya get(Integer penyewa) throws BiayaNotFoundException {
-        Optional<Biaya> result = biayaRepository.findById(penyewa);
-        if (result .isPresent()) {
+    public Biaya get(Integer id) throws BiayaNotFoundException {
+        Optional<Biaya> result = biayaRepository.findById(id);
+        if (result.isPresent()) {
             return result.get();
         }
-        throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + penyewa);
+        throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + id);
     }
 
-    public void delete(Integer penyewa) throws BiayaNotFoundException {
-        Long count = biayaRepository.countById(penyewa);
-        if (count == null || count == 0){
-            throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + penyewa);
+    public void delete(Integer id) throws BiayaNotFoundException {
+        Integer count = biayaRepository.countById(id);
+        if (count == null || count == 0) {
+            throw new BiayaNotFoundException("Tidak dapat menemukan biaya dengan ID" + id);
         }
-        biayaRepository.deleteById(penyewa);
+        biayaRepository.deleteById(id);
     }
 }

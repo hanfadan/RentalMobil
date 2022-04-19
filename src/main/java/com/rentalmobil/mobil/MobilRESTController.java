@@ -22,7 +22,7 @@ public class MobilRESTController {
 
     @PostMapping
     public Mobil CreateMobil(@RequestBody Mobil mobil) {
-        return service.saveMobil(mobil);
+        return service.addMobil(mobil);
     }
 
     @PutMapping("{id}")
@@ -32,7 +32,7 @@ public class MobilRESTController {
         updateMobil.setNo_polisi(mobilDetails.getNo_polisi());
         updateMobil.setHarga_sewa(mobilDetails.getHarga_sewa());
 
-        service.saveMobil(updateMobil);
+        service.addMobil(updateMobil);
 
         return ResponseEntity.ok(updateMobil);
     }

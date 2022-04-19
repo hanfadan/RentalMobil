@@ -42,6 +42,10 @@ public class Penyewa {
     @JoinColumn(name = "id_mobil")
     private Mobil mobil;
 
+    @OneToOne
+    @JoinColumn(name = "id_biaya")
+    private Biaya biaya;
+
     @Override
     public String toString() {
         return "Penyewa{" +
@@ -52,6 +56,7 @@ public class Penyewa {
                 ", status=" + status +
                 ", keterangan='" + keterangan + '\'' +
                 ", mobil=" + mobil +
+                ", biaya=" + biaya +
                 '}';
     }
 }

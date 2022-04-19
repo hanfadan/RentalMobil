@@ -2,40 +2,33 @@ package com.rentalmobil.biaya;
 
 import com.rentalmobil.mobil.Mobil;
 import com.rentalmobil.penyewa.Penyewa;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "biaya")
+@ToString
+@AllArgsConstructor
 
-public class Biaya {
-
+public class Biaya implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id_biaya")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
+
     @Temporal(TemporalType.TIME)
     @Column(name = "jam", nullable = false)
     private Date jam;
+
+    @Column(name = "biaya")
     private Integer biaya;
-
-    @OneToOne(mappedBy = "biaya")
-    private Mobil id_mobil;
-
-    @Override
-    public String toString() {
-        return "Biaya{" +
-                "id=" + id +
-                ", jam=" + jam +
-                ", biaya=" + biaya +
-                ", mobil=" + id_mobil +
-                '}';
-    }
 }
