@@ -1,20 +1,23 @@
 package com.rentalmobil.mobil;
+import lombok.*;
 
-import com.rentalmobil.biaya.Biaya;
-import com.rentalmobil.penyewa.Penyewa;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "mobil")
+@ToString
+@AllArgsConstructor
 
-public class Mobil {
+public class Mobil implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Id
+    @Column(name = "id_mobil")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -27,22 +30,6 @@ public class Mobil {
     @Column(name = "harga_sewa",nullable = false)
     private String harga_sewa;
 
-    @ManyToOne
-    private Penyewa penyewa;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_biaya")
-    private Biaya biaya;
-
-    @Override
-    public String toString() {
-        return "Mobil{" +
-                "id=" + id +
-                ", nama_mobil='" + nama_mobil + '\'' +
-                ", no_polisi='" + no_polisi + '\'' +
-                ", harga_sewa='" + harga_sewa + '\'' +
-                ", penyewa=" + penyewa +
-                ", biaya=" + biaya +
-                '}';
-    }
 }
+
+
