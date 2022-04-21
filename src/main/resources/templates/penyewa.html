@@ -10,6 +10,8 @@
 <h2>Manajemen Penyewa</h2>
     <br>
     <div class="m-2">
+        <a class="h3" th:href="@{/}">Home</a>
+        <br>
         <a class="h3" th:href="@{/penyewa/new}">Tambah Penyewa Baru</a>
     </div>
     <div th:if="${message}" class="alert alert-success text-center">
@@ -22,6 +24,7 @@
             <th>Nama Penyewa</th>
             <th>Tanggal Mulai Sewa</th>
             <th>Tanggal Selesai Sewa</th>
+            <th>Nama Mobil</th>
             <th>Status</th>
             <th>Keterangan</th>
             <th></th>

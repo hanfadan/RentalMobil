@@ -16,6 +16,16 @@
             <input type="text" class="form-control" id="nama_penyewa" th:field="*{nama_penyewa}">
         </div>
 
+            <div class="mb-3">
+                <label for="nama_mobil" class="form-label">Nama Mobil</label>
+            <select th:field="*{mobil}" class="form-select" aria-label="Default select example" id="nama_mobil">
+                <th:block th:each="mobil : ${mobilList}">
+                    <option th:text="${mobil.nama_mobil}" th:value="${mobil.id}">One</option>
+                    <input type="hidden" th:value="${mobil.harga_sewa}">
+                </th:block>
+            </select>
+            </div>
+
         <div class="mb-3">
             <label for="tanggal_mulai_sewa" class="form-label">Tanggal Mulai Sewa</label>
             <input type="date" class="date form-control" id="tanggal_mulai_sewa" th:field="*{tanggal_mulai_sewa}">
@@ -25,15 +35,6 @@
             <label for="tanggal_selesai_sewa" class="form-label">Tanggal Selesai Sewa</label>
             <input type="date" class="date form-control" id="tanggal_selesai_sewa" aria-describedby="emailHelp" th:field="*{tanggal_selesai_sewa}">
         </div>
-
-            <div class="mb-3">
-                <select th:field="*{mobil}" class="custom-select form-control" required>
-                    <th:block th:each="mobil : ${mobilList}">
-                        <option th:text="${mobil.nama_mobil}" th:value="${mobil.id}"/>
-                    </th:block>
-                </select>
-            </div>
-
             <div class="mb-3">
                 <label for="keterangan" class="form-label">Keterangan</label>
                 <input type="text" class="form-control" id="keterangan" aria-describedby="emailHelp" th:field="*{keterangan}">
@@ -51,7 +52,7 @@
 
 <script type="text/javascript">
     function cancelForm() {
-window.location = "[[@{/penyewa}]]";
+window.location = "[[@{/penyewa/}]]";
     }
 </script>
 <script type="text/javascript">

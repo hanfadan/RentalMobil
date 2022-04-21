@@ -1,23 +1,30 @@
 package com.rentalmobil.penyewa;
-
 import com.rentalmobil.biaya.Biaya;
 import com.rentalmobil.mobil.Mobil;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "penyewa")
-public class Penyewa {
+@ToString
+@AllArgsConstructor
+
+public class Penyewa implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     @Id
+    @Column(name = "id_penyewa")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -39,19 +46,11 @@ public class Penyewa {
     private String keterangan;
 
     @ManyToOne
-    @JoinColumn(name = "id_mobil")
+    @JoinColumn(name = "mobil_id")
     private Mobil mobil;
 
-    @Override
-    public String toString() {
-        return "Penyewa{" +
-                "id=" + id +
-                ", nama_penyewa='" + nama_penyewa + '\'' +
-                ", tanggal_mulai_sewa=" + tanggal_mulai_sewa +
-                ", tanggal_selesai_sewa=" + tanggal_selesai_sewa +
-                ", status=" + status +
-                ", keterangan='" + keterangan + '\'' +
-                ", mobil=" + mobil +
-                '}';
-    }
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_biaya")
+    private Biaya biaya;
+
 }
