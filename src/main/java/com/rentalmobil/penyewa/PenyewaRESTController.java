@@ -18,7 +18,7 @@ public class PenyewaRESTController {
 
     @PostMapping
     public Penyewa CreatePenyewa(@RequestBody Penyewa penyewa) {
-        return service.savePenyewa(penyewa);
+        return service.addPenyewa(penyewa);
     }
 
     @PutMapping("{id}")
@@ -30,7 +30,7 @@ public class PenyewaRESTController {
         updatePenyewa.setKeterangan(penyewaDetails.getKeterangan());
         updatePenyewa.setStatus(penyewaDetails.getStatus());
 
-        service.savePenyewa(updatePenyewa);
+        service.addPenyewa(updatePenyewa);
 
         return ResponseEntity.ok(updatePenyewa);
     }

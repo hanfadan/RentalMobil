@@ -10,6 +10,8 @@
 <h2>Manajemen Penyewa</h2>
     <br>
     <div class="m-2">
+        <a class="h3" th:href="@{/}">Home</a>
+        <br>
         <a class="h3" th:href="@{/penyewa/new}">Tambah Penyewa Baru</a>
     </div>
     <div th:if="${message}" class="alert alert-success text-center">
@@ -22,6 +24,7 @@
             <th>Nama Penyewa</th>
             <th>Tanggal Mulai Sewa</th>
             <th>Tanggal Selesai Sewa</th>
+            <th>Nama Mobil</th>
             <th>Status</th>
             <th>Keterangan</th>
             <th></th>
@@ -33,8 +36,10 @@
                     <td>[[${penyewa.nama_penyewa}]]</td>
                     <td>[[${#dates.format(penyewa.tanggal_mulai_sewa,'dd-mm-yyyy')}]]</td>
                     <td>[[${#dates.format(penyewa.tanggal_selesai_sewa,'dd-mm-yyyy')}]]</td>
+                    <td>[[${penyewa.mobil.nama_mobil}]]</td>
                     <td>[[${penyewa.status}]]</td>
                     <td>[[${penyewa.keterangan}]]</td>
+
                     <td>
                         <a class="h4 m-3" th:href="@{'/penyewa/edit/' + ${penyewa.id}}">Edit</a>
                         <a class="h4" th:href="@{'/penyewa/delete/' + ${penyewa.id}}">Delete</a>

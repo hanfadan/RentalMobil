@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -18,11 +19,25 @@ public class BiayaRESTController {
     private BiayaService service;
 
     @GetMapping
-    public List<Biaya> getAllBiaya() { return service.listAll();}
+    public List<Biaya> getAllBiaya() {
+        return service.getAllBiaya();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Biaya> getBiayaById(@PathVariable Integer id) {
+        System.out.println("test " + id);
+        Biaya biaya = null;
+        try {
+            biaya = service.get(id);
+        } catch (BiayaNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.ok(biaya);
+    }
 
     @PostMapping
     public Biaya CreateBiaya(@RequestBody Biaya biaya) {
-        return service.saveBiaya(biaya);
+        return service.addBiaya(biaya);
     }
 
     @PutMapping("{id_penyewa}")
@@ -31,7 +46,7 @@ public class BiayaRESTController {
         updateBiaya.setJam(biayaDetails.getJam());
         updateBiaya.setBiaya(biayaDetails.getBiaya());
 
-        service.saveBiaya(updateBiaya);
+        service.addBiaya(updateBiaya);
 
         return ResponseEntity.ok(updateBiaya);
     }

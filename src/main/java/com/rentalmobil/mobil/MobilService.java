@@ -1,21 +1,30 @@
 package com.rentalmobil.mobil;
-import com.rentalmobil.penyewa.Penyewa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MobilService {
+public class MobilService implements IMobilService{
     @Autowired
     private MobilRepository mobilRepository;
 
+    @Override
+    public List<Mobil> getAllMobil(){
+        List<Mobil> list = new ArrayList<>();
+        mobilRepository.findAll().forEach(e ->list.add(e));
+        return list;
+    }
+
+    @Override
     public List<Mobil> listAll() {
         return  (List<Mobil>) mobilRepository.findAll();
     }
 
-    public Mobil saveMobil(Mobil mobil) {
+    @Override
+    public Mobil addMobil(Mobil mobil){
         mobilRepository.save(mobil);
         return mobil;
     }
@@ -29,7 +38,7 @@ public class MobilService {
     }
 
     public void delete(Integer id) throws MobilNotFoundException {
-        Long count = mobilRepository.countById(id);
+        Integer count = mobilRepository.countById(id);
         if (count == null || count == 0){
             throw new MobilNotFoundException("Tidak dapat menemukan mobil dengan ID" + id);
         }

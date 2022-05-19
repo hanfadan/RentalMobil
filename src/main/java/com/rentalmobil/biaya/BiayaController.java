@@ -1,65 +1,91 @@
 package com.rentalmobil.biaya;
 
-import com.rentalmobil.penyewa.Penyewa;
-import com.rentalmobil.penyewa.PenyewaService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("biaya")
 
 public class BiayaController {
+
     @Autowired
-    private BiayaService service;
+    private BiayaService biayaService;
 
-    @GetMapping("/biaya")
-    public String showBiayaList(Model model){
-        List<Biaya> listBiaya = service.listAll();
-        model.addAttribute("listBiaya", listBiaya);
-        return "biaya";
+    //Melihat Tabel
+    @RequestMapping("/")
+    public ModelAndView showBiayaList(ModelAndView modelAndView) {
+        List<Biaya> biayaList = biayaService.listAll();
+        modelAndView.addObject("listBiaya", biayaList);
+        modelAndView.setViewName("biaya.html");
+        return modelAndView;
     }
 
-    @GetMapping("/biaya/new")
-    public String showNewForm(Model model) {
-        model.addAttribute("biaya", new Biaya());
-        model.addAttribute("pageTitle", "Tambah Biaya");
-        return "biaya_form";
-    }
-
-    @PostMapping("/biaya/save")
-    public String saveBiaya(Biaya biaya, RedirectAttributes ra) {
-        service.saveBiaya(biaya);
-        ra.addFlashAttribute("message", "Biaya berhasil ditambahkan.");
-        return "redirect:/biaya";
-    }
-
-    @GetMapping("/biaya/edit/{id}")
-    public String showEditForm(@PathVariable("id") Integer id, Model model, RedirectAttributes ra) {
-        try {
-            Biaya biaya = service.get(id);
-            model.addAttribute("biaya", biaya);
-            model.addAttribute("pageTitle", "Edit Biaya (ID: " + id +")");
-            return "biaya_form";
-        } catch (BiayaNotFoundException e) {
-            ra.addFlashAttribute("message", e.getMessage());
-            return "redirect:/biaya";
+    //Mengambil semua Biaya
+    @GetMapping
+    public ResponseEntity<List<BiayaInfo>> getAllBiaya() {
+        List<BiayaInfo> responseBiayaList = new ArrayList<>();
+        List<Biaya> biayaList = biayaService.getAllBiaya();
+        for (int i = 0; i < biayaList.size(); i++) {
+            BiayaInfo ob = new BiayaInfo();
+            BeanUtils.copyProperties(biayaList.get(i), ob);
+            responseBiayaList.add(ob);
         }
+        return new ResponseEntity<List<BiayaInfo>>(responseBiayaList, HttpStatus.OK);
     }
 
-    @GetMapping("/biaya/delete/{id}")
-    public String deleteBiaya(@PathVariable("id") Integer id, RedirectAttributes ra) {
+    //Mengambil Biaya dengan ID
+    @GetMapping("{id}")
+    public ResponseEntity<Biaya> getBiayaById(@PathVariable Integer id) {
+        System.out.println("test " + id);
+        Biaya biaya = null;
         try {
-            service.delete(id);
-            ra.addFlashAttribute("message", "biaya dengan ID" + id + " telah dihapus.");
+            biaya = biayaService.get(id);
         } catch (BiayaNotFoundException e) {
-            ra.addFlashAttribute("message", e.getMessage());
+            System.out.println(e.getMessage());
         }
-        return "redirect:/biaya";
+        return ResponseEntity.ok(biaya);
+    }
+
+    //Membuat Biaya Baru
+    @PostMapping
+    public ResponseEntity<Void> addBiaya(@RequestBody BiayaInfo biayaInfo, UriComponentsBuilder builder) {
+        Biaya biaya = new Biaya();
+        BeanUtils.copyProperties(biayaInfo, biaya);
+        biayaService.addBiaya(biaya);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/biaya/{id}").buildAndExpand(biaya.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+
+    //Mengedit Biaya
+    @PutMapping("{id}")
+    public ResponseEntity<Void> updateBiaya(@PathVariable Integer id, @RequestBody BiayaInfo biayaInfo, UriComponentsBuilder builder) throws BiayaNotFoundException {
+        Biaya updateBiaya = biayaService.get(id);
+        updateBiaya.setJam(biayaInfo.getJam());
+        updateBiaya.setBiaya(biayaInfo.getBiaya());
+        biayaService.addBiaya(updateBiaya);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/biaya/{id}").buildAndExpand(updateBiaya.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.OK);
+    }
+
+    //Menghapus Biaya
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteBiaya(@PathVariable Integer id, @RequestBody BiayaInfo biayaInfo, UriComponentsBuilder builder) throws BiayaNotFoundException {
+        Biaya deleteBiaya = biayaService.get(id);
+        biayaService.delete(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/biaya/{id}").buildAndExpand(deleteBiaya.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.NO_CONTENT);
     }
 }
